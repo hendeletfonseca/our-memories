@@ -3,16 +3,16 @@ package com.hendelfonseca.our_memories.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_memorie_img")
-public class MemorieImg {
+@Table(name = "tb_memory_image")
+public class MemoryImage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_memorie_img")
+    @Column(name = "id_memory_image")
     private Long id;
-    @Column(name = "url_memorie_img", nullable = false)
+    @Column(name = "url_memory_image", nullable = false)
     private String url;
 
-    public MemorieImg() {
+    public MemoryImage() {
     }
 
     public Long getId() {

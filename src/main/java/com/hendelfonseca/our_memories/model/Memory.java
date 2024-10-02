@@ -6,24 +6,27 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_memorie")
-public class Memorie {
+@Table(name = "tb_memory")
+public class Memory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_memorie")
+    @Column(name = "id_memory")
     private Long id;
 
-    @Column(name = "date_memorie", nullable = false)
+    @Column(name = "date_memory", nullable = false)
     private LocalDate date;
 
-    @OneToMany
-    @JoinColumn(name = "tb_memorie_img_id_memorie_img")
-    private List<MemorieImg> memorieImgs;
+    @OneToMany(
+            mappedBy = "memory",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<MemoryImage> images;
 
-    public Memorie() {
+    public Memory() {
     }
 
-    public Memorie(LocalDate date) {
+    public Memory(LocalDate date) {
         this.date = date;
     }
 
@@ -43,11 +46,11 @@ public class Memorie {
         this.date = date;
     }
 
-    public List<MemorieImg> getMemorieImgs() {
-        return memorieImgs;
+    public List<MemoryImage> getImages() {
+        return images;
     }
 
-    public void setMemorieImgs(List<MemorieImg> memorieImgs) {
-        this.memorieImgs = memorieImgs;
+    public void setImages(List<MemoryImage> images) {
+        this.images = images;
     }
 }
