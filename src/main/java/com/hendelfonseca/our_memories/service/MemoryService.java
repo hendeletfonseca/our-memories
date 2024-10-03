@@ -1,5 +1,6 @@
 package com.hendelfonseca.our_memories.service;
 
+import com.hendelfonseca.our_memories.exception.MemoryNotFoundException;
 import com.hendelfonseca.our_memories.model.Memory;
 import com.hendelfonseca.our_memories.repository.MemoryRepository;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,14 @@ public class MemoryService implements IMemoryService {
 
     @Override
     public Memory update(Memory memory) {
-        return repo.save(memory);
+        Memory existing = repo.findById(memory.getId())
+                        .orElseThrow(MemoryNotFoundException::new);
+
+        existing.setDate(memory.getDate());
+        existing.getImages().clear();
+        if (memory.getImages() != null) existing.setImages(memory.getImages());
+
+        return repo.save(existing);
     }
 
     public void delete(Memory memory) {

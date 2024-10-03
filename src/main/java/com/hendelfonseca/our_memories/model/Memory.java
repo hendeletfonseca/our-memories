@@ -3,6 +3,7 @@ package com.hendelfonseca.our_memories.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,9 +20,10 @@ public class Memory {
     @OneToMany(
             mappedBy = "memory",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
-    private List<MemoryImage> images;
+    private List<MemoryImage> images = new ArrayList<>();
 
     public Memory() {
     }
