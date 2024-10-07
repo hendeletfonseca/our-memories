@@ -3,8 +3,9 @@ package com.hendelfonseca.our_memories.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_memory")
@@ -17,13 +18,12 @@ public class Memory {
     @Column(name = "date_memory", nullable = false)
     private LocalDate date;
 
-    @OneToMany(
-            mappedBy = "memory",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
-    )
-    private List<MemoryImage> images = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "tb_memory_img_id_memory_img")
+    private List<MemoryImg> memoryImgs;
+
+    @ManyToMany(mappedBy = "memories", fetch = FetchType.EAGER)
+    Set<User> users = new HashSet<>();
 
     public Memory() {
     }
@@ -36,10 +36,6 @@ public class Memory {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public LocalDate getDate() {
         return date;
     }
@@ -48,11 +44,19 @@ public class Memory {
         this.date = date;
     }
 
-    public List<MemoryImage> getImages() {
-        return images;
+    public List<MemoryImg> getMemorieImgs() {
+        return memoryImgs;
     }
 
-    public void setImages(List<MemoryImage> images) {
-        this.images = images;
+    public void setMemorieImgs(List<MemoryImg> memoryImgs) {
+        this.memoryImgs = memoryImgs;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

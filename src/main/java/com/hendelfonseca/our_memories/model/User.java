@@ -2,9 +2,7 @@ package com.hendelfonseca.our_memories.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_user")
@@ -14,16 +12,16 @@ public class User {
     @Column(name = "id_user")
     private UUID id;
 
-    @Column(name = "username_user")
+    @Column(name = "username_user", nullable = false)
     private String username;
 
     @ManyToMany
     @JoinTable(
-            name = "user_memories",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "memory_id")
+            name = "tb_user_memory",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_memory")
     )
-    private List<Memory> memories = new ArrayList<>();
+    Set<Memory> memories = new HashSet<>();
 
     public User() {
     }
@@ -32,12 +30,13 @@ public class User {
         this.username = username;
     }
 
-    public UUID getId() {
-        return id;
+    public User(String username, Set<Memory> memories) {
+        this.username = username;
+        this.memories = memories;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public UUID getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -48,11 +47,11 @@ public class User {
         this.username = username;
     }
 
-    public List<Memory> getMemories() {
+    public Set<Memory> getMemories() {
         return memories;
     }
 
-    public void setMemories(List<Memory> memories) {
+    public void setMemories(Set<Memory> memories) {
         this.memories = memories;
     }
 }

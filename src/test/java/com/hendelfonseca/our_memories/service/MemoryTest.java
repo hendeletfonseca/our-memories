@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -18,32 +18,36 @@ public class MemoryTest {
     private IMemoryService service;
 
     @Test
-    public void shouldStoreMemory() {
+    public void shouldStoreMemorie() {
         Memory memory = new Memory(LocalDate.now());
         assertNotNull(service.create(memory));
     }
 
     @Test
-    public void shouldFindMemoryById() {
+    public void shouldFindMemorieById() {
         Memory savedMemory = service.create(new Memory(LocalDate.now()));
         Memory readedMemory = service.read(savedMemory.getId());
         assertNotNull(readedMemory);
-        assert savedMemory.getId().equals(readedMemory.getId());
+        assertEquals(savedMemory.getId(), readedMemory.getId());
     }
 
     @Test
-    public void shouldUpdateMemory() {
+    public void shouldUpdateMemorie() {
+        Memory savedMemory = service.create(new Memory(LocalDate.now()));
+        savedMemory.setDate(LocalDate.now().plusDays(1));
+
+        Memory updatedMemory = service.update(savedMemory);
+        assertNotNull(updatedMemory);
+        assertEquals(savedMemory.getId(), updatedMemory.getId());
+        assertEquals(savedMemory.getDate(), updatedMemory.getDate());
+    }
+
+    @Test
+    public void shouldDeleteMemorie() {
         Memory memory = new Memory(LocalDate.now());
         service.create(memory);
-
-        memory.setDate(LocalDate.of(2003,6,16));
-        Memory updatedMemory = service.update(memory);
-        assertNotNull(updatedMemory);
-        assert updatedMemory.getDate().equals(memory.getDate());
-
-        updatedMemory = service.read(memory.getId());
-        assertNotNull(updatedMemory);
-        assert updatedMemory.getDate().equals(memory.getDate());
+        service.delete(memory.getId());
+        assertNull(service.read(memory.getId()));
     }
 
 }
