@@ -1,13 +1,15 @@
 package com.hendelfonseca.our_memories.service;
 
+import com.hendelfonseca.our_memories.exception.UserNotFoundException;
 import com.hendelfonseca.our_memories.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -27,7 +29,15 @@ public class UserTest {
         User savedUser = userService.create(new User("username"));
         User readedUser = userService.read(savedUser.getId());
         assertNotNull(readedUser);
-        assert readedUser.getId().equals(savedUser.getId());
+        assertEquals(readedUser.getId(), savedUser.getId());
+    }
+
+    @Test
+    public void shouldThrowUserNotFoundException() {
+        UUID invalidId = UUID.randomUUID();
+        assertThrows(UserNotFoundException.class, () -> {
+            userService.read(invalidId);
+        });
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.hendelfonseca.our_memories.service;
 
+import com.hendelfonseca.our_memories.exception.MemoryNotFoundException;
 import com.hendelfonseca.our_memories.model.Memory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,13 @@ public class MemoryTest {
     }
 
     @Test
+    public void shouldThrowUserNotFoundException() {
+        long invalidId = -1L;
+        assertThrows(MemoryNotFoundException.class, () -> {
+            service.read(invalidId);
+        });
+    }
+    @Test
     public void shouldUpdateMemorie() {
         Memory savedMemory = service.create(new Memory(LocalDate.now()));
         savedMemory.setDate(LocalDate.now().plusDays(1));
@@ -47,7 +55,9 @@ public class MemoryTest {
         Memory memory = new Memory(LocalDate.now());
         service.create(memory);
         service.delete(memory.getId());
-        assertNull(service.read(memory.getId()));
+        assertThrows(MemoryNotFoundException.class, () -> {
+            service.read(memory.getId());
+        });
     }
 
 }

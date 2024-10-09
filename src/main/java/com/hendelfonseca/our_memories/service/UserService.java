@@ -1,5 +1,6 @@
 package com.hendelfonseca.our_memories.service;
 
+import com.hendelfonseca.our_memories.exception.MemoryNotFoundException;
 import com.hendelfonseca.our_memories.exception.UserNotFoundException;
 import com.hendelfonseca.our_memories.model.Memory;
 import com.hendelfonseca.our_memories.model.User;
@@ -31,7 +32,7 @@ public class UserService implements IUserService {
     public User read(UUID id) {
         return userRepository
                 .findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -53,8 +54,9 @@ public class UserService implements IUserService {
     @Transactional
     public User addMemoryToUser(UUID userId, long memoryId) {
         User user = read(userId);
-        Memory memory = memoryRepository.findById(memoryId)
-                .orElseThrow();
+        Memory memory = memoryRepository
+                .findById(memoryId)
+                .orElseThrow(() -> new MemoryNotFoundException("Memory not found with id " + memoryId));
         user.getMemories().add(memory);
         return userRepository.save(user);
     }

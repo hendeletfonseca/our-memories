@@ -1,16 +1,15 @@
 package com.hendelfonseca.our_memories.exception;
 
-import java.util.UUID;
+import org.springframework.http.HttpStatus;
 
 public class UserNotFoundException extends RuntimeException {
 
-    private UUID userId;
-
-    public UserNotFoundException(UUID userId) {
-        super("User not found with id: " + userId);
+    public UserNotFoundException() {
+        super("User not found");
     }
 
     public UserNotFoundException(String message) {
         super(message);
     }
+
 }
