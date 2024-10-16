@@ -17,11 +17,11 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "tb_user_memory",
+            name = "tb_user_album",
             joinColumns = @JoinColumn(name = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_memory")
+            inverseJoinColumns = @JoinColumn(name = "id_album")
     )
-    Set<Memory> memories = new HashSet<>();
+    Set<Album> albums = new HashSet<>();
 
     public User() {
     }
@@ -30,13 +30,12 @@ public class User {
         this.username = username;
     }
 
-    public User(String username, Set<Memory> memories) {
-        this.username = username;
-        this.memories = memories;
-    }
-
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -47,11 +46,11 @@ public class User {
         this.username = username;
     }
 
-    public Set<Memory> getMemories() {
-        return memories;
+    public Set<Album> getAlbums() {
+        return albums;
     }
 
-    public void setMemories(Set<Memory> memories) {
-        this.memories = memories;
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
     }
 }

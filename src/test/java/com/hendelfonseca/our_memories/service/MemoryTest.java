@@ -1,6 +1,7 @@
 package com.hendelfonseca.our_memories.service;
 
 import com.hendelfonseca.our_memories.exception.MemoryNotFoundException;
+import com.hendelfonseca.our_memories.model.Album;
 import com.hendelfonseca.our_memories.model.Memory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,24 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MemoryTest {
 
     @Autowired
-    private IMemoryService service;
+    private MemoryService service;
+    @Autowired
+    private AlbumService albumService;
 
     @Test
     public void shouldStoreMemorie() {
-        Memory memory = new Memory(LocalDate.now());
+
+        Album album = albumService.create(new Album());
+
+        Memory memory = new Memory(album, LocalDate.now());
         assertNotNull(service.create(memory));
     }
 
     @Test
     public void shouldFindMemorieById() {
-        Memory savedMemory = service.create(new Memory(LocalDate.now()));
+        Album album = albumService.create(new Album());
+
+        Memory savedMemory = service.create(new Memory(album, LocalDate.now()));
         Memory readedMemory = service.read(savedMemory.getId());
         assertNotNull(readedMemory);
         assertEquals(savedMemory.getId(), readedMemory.getId());
@@ -41,7 +49,9 @@ public class MemoryTest {
     }
     @Test
     public void shouldUpdateMemorie() {
-        Memory savedMemory = service.create(new Memory(LocalDate.now()));
+        Album album = albumService.create(new Album());
+
+        Memory savedMemory = service.create(new Memory(album, LocalDate.now()));
         savedMemory.setDate(LocalDate.now().plusDays(1));
 
         Memory updatedMemory = service.update(savedMemory);
@@ -52,7 +62,7 @@ public class MemoryTest {
 
     @Test
     public void shouldDeleteMemorie() {
-        Memory memory = new Memory(LocalDate.now());
+        Memory memory = new Memory(albumService.create(new Album()), LocalDate.now());
         service.create(memory);
         service.delete(memory.getId());
         assertThrows(MemoryNotFoundException.class, () -> {

@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserTest {
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @Test
     public void shouldStoreUser() {

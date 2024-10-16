@@ -22,18 +22,24 @@ public class Memory {
     @JoinColumn(name = "tb_memory_img_id_memory_img")
     private List<MemoryImg> memoryImgs;
 
-    @ManyToMany(mappedBy = "memories", fetch = FetchType.EAGER)
-    Set<User> users = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "id_album", nullable = false)
+    private Album album;
 
     public Memory() {
     }
 
-    public Memory(LocalDate date) {
+    public Memory(Album album, LocalDate date) {
+        this.album = album;
         this.date = date;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {
@@ -44,19 +50,19 @@ public class Memory {
         this.date = date;
     }
 
-    public List<MemoryImg> getMemorieImgs() {
+    public List<MemoryImg> getMemoryImgs() {
         return memoryImgs;
     }
 
-    public void setMemorieImgs(List<MemoryImg> memoryImgs) {
+    public void setMemoryImgs(List<MemoryImg> memoryImgs) {
         this.memoryImgs = memoryImgs;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Album getAlbum() {
+        return album;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 }

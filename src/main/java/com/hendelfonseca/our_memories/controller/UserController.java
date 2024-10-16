@@ -1,19 +1,18 @@
 package com.hendelfonseca.our_memories.controller;
 
 import com.hendelfonseca.our_memories.model.User;
-import com.hendelfonseca.our_memories.service.IUserService;
+import com.hendelfonseca.our_memories.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
 public class UserController {
 
-    private final IUserService userService;
+    private final UserService userService;
 
-    public UserController(IUserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -30,11 +29,6 @@ public class UserController {
     @PostMapping("/users")
     User addUser(@RequestBody User newUser) {
         return userService.create(newUser);
-    }
-
-    @PostMapping("/users/{userId}/memories/{memoryId}")
-    User addMemoryToUser(@PathVariable UUID userId, @PathVariable long memoryId) {
-        return userService.addMemoryToUser(userId, memoryId);
     }
 
 }

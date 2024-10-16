@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MemoryService implements IMemoryService {
+public class MemoryService {
 
     private final MemoryRepository repo;
 
@@ -16,28 +16,24 @@ public class MemoryService implements IMemoryService {
         this.repo = repo;
     }
 
-    @Override
     public Memory create(Memory memory) {
         return repo.save(memory);
     }
 
-    @Override
+
     public Memory read(long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new MemoryNotFoundException("Memory not found with id: " + id));
     }
 
-    @Override
     public Memory update(Memory memory) {
         return repo.save(memory);
     }
 
-    @Override
     public void delete(long id) {
         repo.deleteById(id);
     }
 
-    @Override
     public List<Memory> readAll() {
         return repo.findAll();
     }
