@@ -31,12 +31,20 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> readAllByAlbumId(long albumId) {
+        return userRepository.findUsersByAlbumsId(albumId);
+    }
+
     public User update(User user) {
         return userRepository.save(user);
     }
 
     public void delete(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    public boolean existsById(UUID id) {
+        return userRepository.existsById(id);
     }
 
 }

@@ -21,15 +21,15 @@ public class UserAlbumService {
         this.userRepository = userRepository;
     }
 
-    public Album addUserToAlbum(long albumId, UUID userId) {
-        Optional<Album> album = albumRepository.findById(albumId);
-        Optional<User> user = userRepository.findById(userId);
+    public Album addUserToAlbum(UUID userId, long albumId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(AlbumNotFoundException::new);
 
-        if (user.isEmpty()) throw new UserNotFoundException();
-        if (album.isEmpty()) throw new AlbumNotFoundException();
+        album.getUsers().add(user);
 
-        album.get().getUsers().add(user.get());
-        return albumRepository.save(album.get());
+        return albumRepository.save(album);
     }
 
 

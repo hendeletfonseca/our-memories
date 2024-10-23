@@ -17,7 +17,12 @@ public class Album {
     @Column(name = "title_album")
     private String title;
 
-    @ManyToMany(mappedBy = "albums", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "albums",
+            fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     Set<User> users = new HashSet<>();
 
     @OneToMany
@@ -25,6 +30,10 @@ public class Album {
     private Set<Memory> memories = new HashSet<>();
 
     public Album() {
+    }
+
+    public Album(String title) {
+        this.title = title;
     }
 
     public Long getId() {

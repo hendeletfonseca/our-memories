@@ -1,6 +1,7 @@
 package com.hendelfonseca.our_memories.infra;
 
 import com.hendelfonseca.our_memories.exception.MemoryNotFoundException;
+import com.hendelfonseca.our_memories.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,6 +17,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MemoryNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public RestErrorMessage resourceNotFoundException(MemoryNotFoundException ex, WebRequest request) {
+        return new RestErrorMessage(
+                HttpStatus.NOT_FOUND.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public RestErrorMessage resourceNotFoundException(UserNotFoundException ex, WebRequest request) {
         return new RestErrorMessage(
                 HttpStatus.NOT_FOUND.value(),
                 new Date(),
